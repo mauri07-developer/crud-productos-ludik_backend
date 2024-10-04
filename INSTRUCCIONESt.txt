@@ -17,7 +17,7 @@ PASOS PARA EJECUTAR EL PROYECTO:
    ------------------------------------------------
    Si tienes un repositorio remoto, usa el siguiente comando para clonar el proyecto:
 
-   git clone <url-del-repositorio>
+   git clone https://github.com/mauri07-developer/crud-productos-ludik_backend.git
 
 2. Instalar dependencias con Composer
    -----------------------------------
