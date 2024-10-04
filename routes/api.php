@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/products', [ProductController::class, 'index']); // Listar productos activos
+Route::get('/products/{id}', [ProductController::class, 'show']); // Mostrar un producto específico
+Route::post('/product/save', [ProductController::class, 'create']); // Crear un nuevo producto (cambiado a 'save')
+Route::put('/product/update/{id}', [ProductController::class, 'update']); // Actualizar un producto existente (cambiado a 'update')
+Route::delete('/product/delete/{id}', [ProductController::class, 'destroy']); // Eliminar un producto

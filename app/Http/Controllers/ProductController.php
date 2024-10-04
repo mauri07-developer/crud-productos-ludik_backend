@@ -18,28 +18,43 @@ class ProductController extends Controller
     // Crear un nuevo producto
     public function create()
     {
-        // Validar los datos de entrada
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:255',
-            'precio' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-        ]);
-
-        // Crear el producto
-        $product = Product::create($request->all());
-
-        // Retornar el producto creado con un código de estado 201
-        return response()->json($product, 201);
+        try {
+            // Validar los datos de entrada
+            $request->validate([
+                'nombre' => 'required|string|max:255',
+                'descripcion' => 'required|string|max:255',
+                'precio' => 'required|numeric|min:0',
+                'stock' => 'required|integer|min:0',
+            ]);
+    
+            // Crear el producto
+            $product = Product::create($request->all());
+    
+            // Retornar la respuesta con código 200 y mensaje de éxito
+            return response()->json([
+                'code' => 200,
+                'message' => 'Producto registrado correctamente',
+                'status' => true,
+                'product' => $product // También puedes incluir el producto creado si lo deseas
+            ], 200);
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Retornar la respuesta con código 500 y el mensaje de error de validación
+            return response()->json([
+                'code' => 500,
+                'message' => $e->getMessage(), // Mensaje de error de validación
+                'status' => false
+            ], 500);
+        } catch (\Exception $e) {
+            // Capturar cualquier otra excepción y retornar un mensaje genérico
+            return response()->json([
+                'code' => 500,
+                'message' => 'Ocurrió un error al registrar el producto',
+                'status' => false
+            ], 500);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     // Mostrar un producto específico
     public function show(Product $product)
@@ -53,43 +68,64 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
 
     // Actualizar un producto existente
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
+        // Buscar el producto por ID
         $product = Product::find($id);
 
+        // Verificar si el producto existe
         if (!$product) {
-            return response()->json(['message' => 'Producto no encontrado'], 404);
+            return response()->json([
+                'code' => 404,
+                'message' => 'Producto no encontrado',
+                'status' => false
+            ], 404);
         }
 
+        // Validar los datos de entrada
         $request->validate([
-            'name' => 'string|max:255',
-            'price' => 'numeric',
-            'stock' => 'integer',
+            'nombre' => 'string|max:255',
+            'descripcion' => 'string|max:255',
+            'precio' => 'numeric|min:0',
+            'stock' => 'integer|min:0',
         ]);
 
+        // Actualizar el producto
         $product->update($request->all());
-        return response()->json($product);
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'Producto actualizado correctamente',
+            'status' => true,
+            'product' => $product // También puedes incluir el producto actualizado si lo deseas
+        ], 200);
     }
 
     // Eliminar un producto
     public function destroy(Product $product)
     {
+        // Buscar el producto por ID
         $product = Product::find($id);
 
+        // Verificar si el producto existe
         if (!$product) {
-            return response()->json(['message' => 'Producto no encontrado'], 404);
+            return response()->json([
+                'code' => 404,
+                'message' => 'Producto no encontrado',
+                'status' => false
+            ], 404);
         }
 
-        $product->delete();
-        return response()->json(['message' => 'Producto eliminado con éxito']);
+        // Cambiar el estado del producto a 0 (inactivo)
+        $product->estado = 0;
+        $product->save();
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'Producto eliminado con éxito',
+            'status' => true
+        ], 200);
     }
 }
