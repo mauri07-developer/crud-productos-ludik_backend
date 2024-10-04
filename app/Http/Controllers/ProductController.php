@@ -16,7 +16,7 @@ class ProductController extends Controller
     }
 
     // Crear un nuevo producto
-    public function create()
+    public function create(Request $request)
     {
         try {
             // Validar los datos de entrada
@@ -57,7 +57,7 @@ class ProductController extends Controller
 
 
     // Mostrar un producto específico
-    public function show(Product $product)
+    public function show($id)
     {
         $product = Product::where('id', $id)->where('estado', 1)->first();
 
@@ -104,7 +104,7 @@ class ProductController extends Controller
     }
 
     // Eliminar un producto
-    public function destroy(Product $product)
+    public function destroy($id)
     {
         // Buscar el producto por ID
         $product = Product::find($id);
