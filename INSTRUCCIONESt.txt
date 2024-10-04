@@ -1,0 +1,122 @@
+======================================================
+                INSTRUCCIONES DE PROYECTO LARAVEL
+======================================================
+
+Requisitos previos:
+-------------------
+- PHP 8.x o superior
+- Composer
+- XAMPP o Laragon (opcional para el servidor local)
+- MySQL (incluido en XAMPP o Laragon)
+
+
+PASOS PARA EJECUTAR EL PROYECTO:
+-------------------------------
+
+1. Clonar el repositorio o descargar el proyecto
+   ------------------------------------------------
+   Si tienes un repositorio remoto, usa el siguiente comando para clonar el proyecto:
+
+   git clone <url-del-repositorio>
+
+2. Instalar dependencias con Composer
+   -----------------------------------
+   Navega a la carpeta raíz del proyecto y ejecuta el siguiente comando:
+
+   composer install
+
+3. Configurar el archivo .env
+   ---------------------------
+   Renombra el archivo `.env.example` a `.env` y actualiza las variables de entorno necesarias.
+
+   Ejemplo de configuración de base de datos:
+   -------------------------------------------
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=nombre_base_datos
+   DB_USERNAME=usuario
+   DB_PASSWORD=contraseña
+
+4. Generar la clave de la aplicación
+   ---------------------------------
+   Ejecuta el siguiente comando para generar la clave de la aplicación:
+
+   php artisan key:generate
+
+5. Migrar las bases de datos
+   -------------------------
+   Ejecuta las migraciones para crear las tablas necesarias con el siguiente comando:
+
+   php artisan migrate
+
+6. Levantar el servidor local
+   --------------------------
+   Si usas XAMPP o Laragon, inicia Apache y MySQL desde el panel de control.
+   Luego, ejecuta el siguiente comando para levantar el servidor de Laravel:
+
+   php artisan serve
+
+   El proyecto estará disponible en:
+   ---------------------------------
+   http://127.0.0.1:8000
+
+
+ACCESO A LAS APIS:
+------------------
+
+1. Listar productos activos:
+   -------------------------
+   Método: GET
+   URL: /products
+
+   Ejemplo:
+   http://127.0.0.1:8000/products
+
+
+2. Mostrar un producto específico:
+   -------------------------------
+   Método: GET
+   URL: /products/{id}
+
+   Ejemplo:
+   http://127.0.0.1:8000/products/1
+
+
+3. Crear un nuevo producto:
+   ------------------------
+   Método: POST
+   URL: /product/save
+
+   Ejemplo de JSON de entrada:
+   {
+       "nombre": "Producto 1",
+       "descripcion": "Descripción del producto",
+       "precio": 10.99,
+       "stock": 100
+   }
+
+
+4. Actualizar un producto existente:
+   ---------------------------------
+   Método: PUT
+   URL: /product/update/{id}
+
+   Ejemplo de JSON de entrada:
+   {
+       "nombre": "Producto 1 Actualizado",
+       "descripcion": "Descripción actualizada",
+       "precio": 12.99,
+       "stock": 150
+   }
+
+
+5. Eliminar un producto (cambiar estado a inactivo):
+   -------------------------------------------------
+   Método: DELETE
+   URL: /product/delete/{id}
+
+   Ejemplo:
+   http://127.0.0.1:8000/product/delete/1
+
+======================================================
